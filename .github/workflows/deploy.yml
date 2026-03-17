@@ -2,7 +2,8 @@ name: Deploy to GitHub Pages with LFS
 
 on:
   push:
-    branches: [ main ] # 如果你的主分支叫 master，请确保这里一致
+    # 同时监听 main 和 master 分支的推送
+    branches: [ main, master ] 
 
 permissions:
   contents: read
@@ -18,7 +19,6 @@ jobs:
         with:
           lfs: true # 开启 LFS 追踪
 
-      # 修改这里：使用 pull 代替 checkout，确保 102MB 的数据被真实拉取
       - name: Force Pull LFS objects
         run: git lfs pull
 

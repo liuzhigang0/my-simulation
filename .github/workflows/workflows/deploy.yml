@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages with LFS
 
 on:
   push:
-    branches: [ main ] # 如果你的主分支叫 master，请改为 master
+    branches: [ main ] # 如果你的主分支叫 master，请确保这里一致
 
 permissions:
   contents: read
@@ -16,10 +16,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          lfs: true # 关键：告诉 GitHub 下载真实的 LFS 大文件
+          lfs: true # 开启 LFS 追踪
 
-      - name: Checkout LFS objects
-        run: git lfs checkout
+      # 修改这里：使用 pull 代替 checkout，确保 102MB 的数据被真实拉取
+      - name: Force Pull LFS objects
+        run: git lfs pull
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -27,7 +28,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' # 部署整个根目录
+          path: '.' 
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
